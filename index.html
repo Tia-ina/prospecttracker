@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="mg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1f4d33">
+<title>ProspectTracker MG/FR</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="splash" aria-hidden="true">
+  <div class="sp-cover"><div class="sp-stage">
+    <img class="sp-plate" src="splash-fond.jpg" alt="">
+    <div class="sp-boat">
+      <div class="sp-ripples"><i></i><i></i><i></i></div>
+      <div class="sp-bob"><img class="sp-refl" src="logo-tas.png" alt=""><img class="sp-logo" src="logo-tas.png" alt=""></div>
+    </div>
+  </div></div>
+  <div class="sp-puffs"><i style="--d:0s;left:-10%;top:38%;width:70vmax"></i><i style="--d:.15s;left:30%;top:30%;width:80vmax"></i><i style="--d:.3s;left:55%;top:42%;width:70vmax"></i><i style="--d:.5s;left:5%;top:55%;width:75vmax"></i><i style="--d:.65s;left:45%;top:58%;width:80vmax"></i><i style="--d:.85s;left:20%;top:20%;width:90vmax"></i></div>
+  <button id="spSkip" aria-label="Skip">⏭</button>
+</div>
+
+
+<header class="bar px-4 pt-4 pb-4 rounded-b-3xl">
+  <div class="flex justify-between items-start max-w-md mx-auto">
+    <button id="btnMenu" onclick="show('menu')" class="btnmenu" hidden aria-label="Menu">🏠</button>
+    <img src="logo-tas.png" alt="T.A.S" class="logo" onerror="this.remove()">
+    <div>
+      <h1 class="text-lg font-extrabold leading-tight" id="uiTitre"></h1>
+      <p class="text-xs opacity-80 mt-1" data-i18n="sousTitre"></p>
+    </div>
+    <select id="selectLangue" onchange="changerLangue()" class="text-xs rounded-lg p-1 font-semibold text-black">
+      <option value="mg">MG 🇲🇬</option><option value="fr">FR 🇫🇷</option>
+    </select>
+  </div>
+</header>
+
+<main class="max-w-md mx-auto px-4 pt-4">
+
+  <!-- FILTRER -->
+  <section id="v-menu" class="view on space-y-3"></section>
+
+  <section id="v-filtrer" class="view space-y-3">
+    <div class="carte p-4 space-y-3">
+      <h2 class="font-bold text-sm" data-i18n="paramTitre"></h2>
+      <div><label class="lbl" data-i18n="lblSujets"></label>
+        <input id="inputSujets" class="champ" value="lapin, provende, fiompiana, élevage, alimentation, sakafo, kisoa"></div>
+      <div><label class="lbl" data-i18n="lblIntentions"></label>
+        <input id="inputIntentions" class="champ" value="mila, vonjy, iza, mivarotra, misy, besoin, cherche, où, qui, aide, prix, vidiny"></div>
+      <div><label class="lbl" data-i18n="lblJours"></label>
+        <input id="inputJours" type="number" min="1" value="7" class="champ"></div>
+    </div>
+    <div class="carte p-4">
+      <label class="lbl" data-i18n="lblFlux"></label>
+      <textarea id="fluxInput" rows="6" class="champ">Tamin'ny 2 andro lasa | Mila vonjy, iza no misy mivarotra sakafo tsara ho an'ny fiompiana lapiny? | https://facebook.com/groups/elevage/posts/111
+Il y a 1 jour | Je cherche un fournisseur de provende à Antananarivo pour mon élevage | https://facebook.com/groups/elevage/posts/222
+Tamin'ny 15 andro lasa | Sary tsara androany amin'ny fiompiana | https://facebook.com/groups/elevage/posts/333</textarea>
+      <button onclick="analyser()" class="btn btn-o w-full mt-3" data-i18n="btnFiltrer"></button>
+      <p id="resume" class="text-xs mt-3 font-semibold" style="color:var(--vert2)"></p>
+    </div>
+  </section>
+
+  <!-- LISTES -->
+  <section id="v-listes" class="view space-y-3">
+    <input id="recherche" oninput="renderListe()" class="champ" data-ph="rechercher">
+    <div id="puces" class="flex gap-2 overflow-x-auto pb-1"></div>
+    <div class="flex justify-between items-center text-xs">
+      <span id="nbListe" class="font-semibold"></span>
+      <select id="tri" onchange="renderListe()" class="text-xs border rounded-lg p-1 bg-white">
+        <option value="r" data-i18n="triRecent"></option><option value="a" data-i18n="triAncien"></option>
+      </select>
+    </div>
+    <div id="liste" class="space-y-3"></div>
+  </section>
+
+  <!-- JOURNAL -->
+  <section id="v-journal" class="view space-y-3">
+    <div id="pucesJ" class="flex gap-2 overflow-x-auto pb-1"></div>
+    <div id="journal" class="space-y-3"></div>
+    <button onclick="viderJournal()" class="btn btn-r w-full" data-i18n="viderJournal"></button>
+  </section>
+
+  <!-- PROFIL -->
+  <section id="v-profil" class="view space-y-3">
+    <div class="carte p-4">
+      <h2 class="font-bold text-sm mb-3" data-i18n="statsTitre"></h2>
+      <div class="grid grid-cols-2 gap-2 text-center" id="stats"></div>
+    </div>
+    <div class="carte p-4 space-y-3">
+      <h2 class="font-bold text-sm" data-i18n="profilTitre"></h2>
+      <div><label class="lbl" data-i18n="pNom"></label><input id="pNom" class="champ" onchange="saveProfil()"></div>
+      <div><label class="lbl" data-i18n="pEnt"></label><input id="pEnt" class="champ" onchange="saveProfil()"></div>
+      <div class="grid grid-cols-2 gap-2">
+        <div><label class="lbl" data-i18n="pTel"></label><input id="pTel" class="champ" onchange="saveProfil()"></div>
+        <div><label class="lbl" data-i18n="pMail"></label><input id="pMail" class="champ" onchange="saveProfil()"></div>
+      </div>
+      <div><label class="lbl" data-i18n="pOffre"></label><input id="pOffre" class="champ" onchange="saveProfil()"></div>
+      <div><label class="lbl" data-i18n="pMsg"></label>
+        <textarea id="pMsg" rows="5" class="champ" onchange="saveProfil()"></textarea>
+        <p class="text-[11px] mt-1 opacity-70" data-i18n="pMsgAide"></p></div>
+    </div>
+    <div class="grid grid-cols-2 gap-2">
+      <button onclick="exporter()" class="btn btn-l" data-i18n="exporter"></button>
+      <button onclick="toutEffacer()" class="btn btn-r" data-i18n="toutEffacer"></button>
+    </div>
+  </section>
+  <!-- MARCHÉ -->
+  <section id="v-marche" class="view space-y-3"></section>
+</main>
+
+<nav class="nav">
+  <button data-tab="filtrer" class="on" onclick="show('filtrer')"><i>🔎</i><span data-i18n="navFiltrer"></span></button>
+  <button data-tab="listes" onclick="show('listes')"><i>📋</i><span data-i18n="navListes"></span><em id="bListes" class="pastille not-italic" hidden></em></button>
+  <button data-tab="marche" onclick="show('marche')"><i>📈</i><span id="navMarche">Marché</span></button>
+  <button data-tab="journal" onclick="show('journal')"><i>📒</i><span data-i18n="navJournal"></span></button>
+  <button data-tab="profil" onclick="show('profil')"><i>👤</i><span data-i18n="navProfil"></span></button>
+</nav>
+<div id="toast"></div>
+
+<script src="app.js"></script>
+<script src="marche.js"></script>
+<script src="menu.js"></script>
+<script src="licence.js"></script>
+<script src="splash.js"></script>
+<script>if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+PROSPECTTRACKER T.A.S - SITE COMPLET (tous les fichiers à la racine, aucun dossier)
+
+PAGES ET CODE
+ index.html            page principale (animation de démarrage, menu, écrans)
+ style.css             style, fond T.A.S, animation de démarrage
+ app.js                filtrage, listes, journal, profil, langues MG/FR
+ marche.js             module Marché (demande/offre, évolution, bilan, stratégie)
+ menu.js               menu principal
+ splash.js             animation de démarrage
+ manifest.webmanifest  installation comme application
+ sw.js                 fonctionnement hors ligne
+
+IMAGES (vous pouvez les remplacer, mêmes noms)
+ fond-tas.jpg          photo T.A.S : fond du menu principal
+ splash-fond.jpg       fond de l'animation (photo sans le logo)
+ logo-tas.png          logo détouré
+ icon-192.png, icon-512.png   icône de l'application
+
+MISE EN LIGNE (GitHub Pages)
+ 1. Créez un dépôt public, puis "Add file" > "Upload files".
+ 2. Envoyez les 14 fichiers de ce dossier (ils vont tous à la racine du dépôt).
+ 3. Settings > Pages > Branch: main, dossier "/ (root)" > Save.
+ 4. Ouvrez https://VOTRE-COMPTE.github.io/NOM-DU-DEPOT/ avec internet une première fois.
+
+LICENCE (essai 3 jours + paiement MVola)
+ licence.js            à la racine du site : modifier LIC.api (adresse de api.php)
+ Serveur : api.php + .htaccess dans le dossier "serveur" (hébergement PHP avec SQLite et curl)
+ Voir LISEZMOI-SERVEUR.txt
