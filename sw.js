@@ -1,4 +1,4 @@
-const CACHE = 'prospecttracker-web-v6';
+const CACHE = 'prospecttracker-web-v7';
 const LOCAL = ['./', 'index.html', 'style.css', 'app.js', 'marche.js', 'menu.js', 'licence.js', 'splash.js', 'fond-tas.jpg', 'splash-fond.jpg', 'logo-tas.png', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 const TAILWIND = 'https://cdn.tailwindcss.com';
 self.addEventListener('install', e => {

@@ -52,7 +52,7 @@ function inscription() {
 async function licInscrire() {
   const t = $('licTel').value.replace(/[\s.]/g, '');
   if (!TEL.test(t)) return licMsg(M('Laharana tsy mety (034 / 038)', 'Numéro invalide (034 ou 038)'));
-  try { const s = await api('init', { tel: t }); if (s.erreur) return licMsg(s.erreur); stocker(s); fini(); } catch (e) { licMsg(sansReseau()); }
+  try { const s = await api('init', { tel: t }); if (s.erreur) return licMsg(s.erreur); stocker(s); fini(); } catch (e) { licMsg(sansReseau() + ' (' + e.message + ')'); }
 }
 
 /* 2. Mur de paiement : virement MVola manuel, puis code envoyé par e-mail après vérification */
@@ -71,10 +71,10 @@ async function licDemande() {                        // envoie ID appareil + té
   try {
     const r = await api('demande', { email: m });
     licMsg(r.ok ? M("Voalefa ny fangatahana. Hahazo ny kaody amin'ny e-mail ianao aorian'ny fanamarinana.", 'Demande envoyée. Vous recevrez votre code par e-mail après vérification du paiement.') : (r.erreur || 'Erreur'));
-  } catch (e) { licMsg(sansReseau()); }
+  } catch (e) { licMsg(sansReseau() + ' (' + e.message + ')'); }
 }
 async function licCode() {
-  try { const s = await api('unlock', { code: $('licCode').value.trim() }); if (s.statut === 'paye') { stocker(s); fini(); } else licMsg(M('Kaody diso', 'Code incorrect')); } catch (e) { licMsg(sansReseau()); }
+  try { const s = await api('unlock', { code: $('licCode').value.trim() }); if (s.statut === 'paye') { stocker(s); fini(); } else licMsg(M('Kaody diso', 'Code incorrect')); } catch (e) { licMsg(sansReseau() + ' (' + e.message + ')'); }
 }
 
 /* ---------- Pastille d'état ---------- */
