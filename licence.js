@@ -1,8 +1,9 @@
 /* ===== Licence : essai de 3 jours + déverrouillage MVola (paiement unique par appareil) ===== */
 const LIC = {
-  api: 'https://VOTRE-SERVEUR/api.php',      // adresse de api.php (voir LISEZMOI-SERVEUR.txt)
+  api: 'https://tas-licence.infinityfreeapp.com/licence/api.php',      // adresse de api.php (voir LISEZMOI-SERVEUR.txt)
   verrouillees: ['marche', 'profil'],        // écrans payants une fois l'essai terminé
-  filtresGratuits: ['tous', 'prospects']     // listes gratuites ; les autres sont payantes
+  filtresGratuits: ['tous', 'prospects'],
+  paiement: '034 00 000 00'      // numéro MVola qui reçoit les paiements (à changer)     // listes gratuites ; les autres sont payantes
 };
 const TEL = /^(?:\+?261|0)3[48]\d{7}$/;
 let LS = null, _t = null;
@@ -54,24 +55,23 @@ async function licInscrire() {
   try { const s = await api('init', { tel: t }); if (s.erreur) return licMsg(s.erreur); stocker(s); fini(); } catch (e) { licMsg(sansReseau()); }
 }
 
-/* 2. Mur de paiement */
+/* 2. Mur de paiement : virement MVola manuel, puis code envoyé par e-mail après vérification */
 function mur() {
   if (etat() === 'paye') return;
+  const px = LS && LS.prix || '';
   ov(`<h2 class="font-extrabold text-base">🔒 ${M('Voafetra ny fampiasana', 'Fonctions verrouillées')}</h2>
-    <p class="text-xs">${M(`Aloavy indray mandeha ${LS && LS.prix || ''} Ar ho an'ity fitaovana ity hanokafana ny zava-drehetra.`, `Un paiement unique de ${LS && LS.prix || ''} Ar pour cet appareil débloque tout.`)}</p>
-    <button class="btn btn-o w-full" onclick="licPayer()">💳 ${M("Aloavy amin'ny MVola", 'Payer avec MVola')}</button>
-    <div class="flex gap-2"><input id="licCode" class="champ" placeholder="${M('Kaody', 'Code de déverrouillage')}" inputmode="numeric"><button class="btn btn-l" onclick="licCode()">OK</button></div>`, true);
+    <p class="text-xs">${M(`1) Alefaso amin'ny MVola ny ${px} Ar mankany amin'ny ${LIC.paiement}. 2) Angataho ny kaody : halefa amin'ny e-mail izy aorian'ny fanamarinana ny fandoavam-bola.`, `1) Envoyez ${px} Ar par MVola au ${LIC.paiement}. 2) Demandez votre code : il vous sera envoyé par e-mail après vérification du paiement.`)}</p>
+    <input id="licMail" type="email" class="champ" placeholder="E-mail">
+    <button class="btn btn-o w-full" onclick="licDemande()">✉️ ${M('Angataho ny kaody', 'Demander mon code')}</button>
+    <div class="flex gap-2"><input id="licCode" class="champ" placeholder="${M('Kaody voaray', 'Code reçu')}" inputmode="numeric"><button class="btn btn-l" onclick="licCode()">OK</button></div>`, true);
 }
-async function licPayer() {
-  licMsg(M("Hamarino ao amin'ny findainao (MVola)…", 'Validez le paiement sur votre téléphone (MVola)…'));
-  try { const r = await api('pay'); if (!r.ok) return licMsg(r.erreur || 'Erreur'); sonder(); } catch (e) { licMsg(sansReseau()); }
-}
-function sonder() {                                  // déverrouillage automatique dès que le serveur confirme
-  let n = 0; clearInterval(_t);
-  _t = setInterval(async () => {
-    if (++n > 45) return clearInterval(_t);
-    try { const s = await api('status'); stocker(s); if (s.statut === 'paye') fini(); } catch (e) {}
-  }, 4000);
+async function licDemande() {                        // envoie ID appareil + téléphone + e-mail au propriétaire
+  const m = $('licMail').value.trim();
+  if (!/^\S+@\S+\.\S+$/.test(m)) return licMsg(M('E-mail tsy mety', 'E-mail invalide'));
+  try {
+    const r = await api('demande', { email: m });
+    licMsg(r.ok ? M("Voalefa ny fangatahana. Hahazo ny kaody amin'ny e-mail ianao aorian'ny fanamarinana.", 'Demande envoyée. Vous recevrez votre code par e-mail après vérification du paiement.') : (r.erreur || 'Erreur'));
+  } catch (e) { licMsg(sansReseau()); }
 }
 async function licCode() {
   try { const s = await api('unlock', { code: $('licCode').value.trim() }); if (s.statut === 'paye') { stocker(s); fini(); } else licMsg(M('Kaody diso', 'Code incorrect')); } catch (e) { licMsg(sansReseau()); }
