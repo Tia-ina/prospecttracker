@@ -3,7 +3,7 @@ const LIC = {
   api: 'https://tas-licence.infinityfreeapp.com/licence/api.php',      // adresse de api.php (voir LISEZMOI-SERVEUR.txt)
   verrouillees: ['marche', 'profil'],        // écrans payants une fois l'essai terminé
   filtresGratuits: ['tous', 'prospects'],
-  paiement: '034 00 000 00'      // numéro MVola qui reçoit les paiements (à changer)     // listes gratuites ; les autres sont payantes
+  paiement: '038 93 056 91'      // numéro MVola qui reçoit les paiements     // listes gratuites ; les autres sont payantes
 };
 const TEL = /^(?:\+?261|0)3[48]\d{7}$/;
 let LS = null, _t = null;
