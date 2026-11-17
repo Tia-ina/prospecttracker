@@ -1,5 +1,5 @@
-const CACHE = 'prospecttracker-web-v10';
-const LOCAL = ['./', 'index.html', 'style.css', 'app.js', 'marche.js', 'menu.js', 'licence.js', 'splash.js', 'fond-tas.jpg', 'splash-fond.jpg', 'logo-tas.png', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
+const CACHE = 'prospecttracker-web-v11';
+const LOCAL = ['./', 'index.html', 'style.css', 'app.js', 'marche.js', 'menu.js', 'licence.js', 'recherche.js', 'splash.js', 'fond-tas.jpg', 'splash-fond.jpg', 'logo-tas.png', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 const TAILWIND = 'https://cdn.tailwindcss.com';
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(async c => {

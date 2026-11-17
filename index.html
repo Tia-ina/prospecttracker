@@ -54,6 +54,9 @@
       <div><label class="lbl" data-i18n="lblJours"></label>
         <input id="inputJours" type="number" min="1" value="7" class="champ"></div>
     </div>
+    <div class="carte p-4 space-y-3" id="fbBox"></div>
+    <details>
+    <summary class="text-xs font-semibold" style="padding:6px 4px">⚙ Avancé / Fanampiny : coller un flux</summary>
     <div class="carte p-4">
       <label class="lbl" data-i18n="lblFlux"></label>
       <textarea id="fluxInput" rows="6" class="champ">Tamin'ny 2 andro lasa | Mila vonjy, iza no misy mivarotra sakafo tsara ho an'ny fiompiana lapiny? | https://facebook.com/groups/elevage/posts/111
@@ -62,6 +65,7 @@ Tamin'ny 15 andro lasa | Sary tsara androany amin'ny fiompiana | https://faceboo
       <button onclick="analyser()" class="btn btn-o w-full mt-3" data-i18n="btnFiltrer"></button>
       <p id="resume" class="text-xs mt-3 font-semibold" style="color:var(--vert2)"></p>
     </div>
+    </details>
   </section>
 
   <!-- LISTES -->
@@ -125,6 +129,7 @@ Tamin'ny 15 andro lasa | Sary tsara androany amin'ny fiompiana | https://faceboo
 <script src="marche.js"></script>
 <script src="menu.js"></script>
 <script src="licence.js"></script>
+<script src="recherche.js"></script>
 <script src="splash.js"></script>
 <script>if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});</script>
 </body>
