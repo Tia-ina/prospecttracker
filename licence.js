@@ -1,6 +1,6 @@
 /* ===== Licence : essai de 3 jours + déverrouillage MVola (paiement unique par appareil) ===== */
 const LIC = {
-  api: 'https://tas-licence.infinityfreeapp.com/licence/api.php',      // adresse de api.php (voir LISEZMOI-SERVEUR.txt)
+  api: 'https://script.google.com/macros/s/AKfycbw8ngLS0EsCPeRpC6SpSRDr6IpHlP_G0_ta-TiATPRkzhDWyZ3x1N3Le2Kbziy5LoeldQ/exec',      // adresse de api.php (adresse du script Google)
   verrouillees: ['marche', 'profil'],        // écrans payants une fois l'essai terminé
   filtresGratuits: ['tous', 'prospects'],
   paiement: '038 93 056 91'      // numéro MVola qui reçoit les paiements     // listes gratuites ; les autres sont payantes
