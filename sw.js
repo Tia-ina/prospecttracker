@@ -1,4 +1,4 @@
-const CACHE = 'prospecttracker-web-v11';
+const CACHE = 'prospecttracker-web-v12';
 const LOCAL = ['./', 'index.html', 'style.css', 'app.js', 'marche.js', 'menu.js', 'licence.js', 'recherche.js', 'splash.js', 'fond-tas.jpg', 'splash-fond.jpg', 'logo-tas.png', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 const TAILWIND = 'https://cdn.tailwindcss.com';
 self.addEventListener('install', e => {
@@ -14,7 +14,7 @@ self.addEventListener('activate', e => {
 });
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
-  e.respondWith(caches.match(e.request).then(hit => hit || fetch(e.request).then(r => {
+  e.respondWith(caches.match(e.request, { ignoreSearch: true }).then(hit => hit || fetch(e.request).then(r => {
     if (r && (r.ok || r.type === 'opaque')) { const copie = r.clone(); caches.open(CACHE).then(c => c.put(e.request, copie)); }
     return r;
   }).catch(() => caches.match('index.html'))));
